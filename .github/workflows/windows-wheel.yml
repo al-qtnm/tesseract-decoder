@@ -91,5 +91,6 @@ jobs:
     - name: test
       run: |
         pip install ./bazel-bin/*.whl
+        python -c "import tesseract_decoder; print(tesseract_decoder)"
     
 
