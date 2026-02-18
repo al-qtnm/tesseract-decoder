@@ -1,5 +1,7 @@
 load("@rules_python//python:packaging.bzl", "py_wheel")
 
+exports_files(["HConfig.h.in"])
+
 filegroup(
     name="package_description",
     srcs=["README.md"],
@@ -19,7 +21,7 @@ py_wheel(
     name="tesseract_decoder_wheel",
     distribution = "tesseract_decoder",
     deps=[
-        "//src:tesseract_decoder",
+        "//src:tesseract_decoder_copy_so_to_pyd",
         ":package_data",
     ],
     version = "$(VERSION)",
@@ -30,7 +32,7 @@ py_wheel(
     platform= select({
         ":macos_arm": "macosx_11_0_arm64",
         ":macos_x86": "macosx_10_13_x86_64",
-        "@platforms//os:windows": "win32",
+        "@platforms//os:windows": "win_amd64",
         "@platforms//os:linux": MANYLINUX_VERSION,
     }),
     strip_path_prefixes = ["src"],

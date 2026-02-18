@@ -3,7 +3,7 @@ common --enable_bzlmod --enable_workspace
 # Automatically apply build:<os> sections based on host OS.
 common --enable_platform_specific_config
 
-build --cxxopt='-std=c++20'
+build:windows --cxxopt='/std:c++20'
 
 # Needed to fix issues like this which arose in GCC 15 on Linux:
 # "error: relocation refers to local symbol [...], which is defined in a discarded section"
@@ -11,3 +11,5 @@ build --cxxopt='-std=c++20'
 build:linux --copt=-ffunction-sections
 build:linux --copt=-fdata-sections
 build:linux --linkopt=-Wl,--gc-sections
+
+
