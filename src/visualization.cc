@@ -10,7 +10,7 @@ void Visualizer::add_detector_coords(const std::vector<std::vector<double>>& det
   for (size_t d = 0; d < detector_coords.size(); ++d) {
     std::stringstream ss;
     ss << "Detector D" << d << " coordinate (";
-    size_t e = std::min(3ul, detector_coords[d].size());
+    size_t e = std::min(size_t{3}, detector_coords[d].size());
     for (size_t i = 0; i < e; ++i) {
       ss << detector_coords[d][i];
       if (i + 1 < e) ss << ", ";

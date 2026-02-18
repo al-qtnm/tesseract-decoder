@@ -19,11 +19,11 @@ NDEBUG_COPTS = [
   "-DNDEBUG",
 ]
 
-copy_file(
+genrule(
     name = "highs-config",
-    src = "src/HConfig.h.bazel.in",
-    out = "HConfig.h",
-    visibility = ["//visibility:public"],
+    srcs = ["@//:HConfig.h.in"],
+    outs = ["HConfig.h"],
+    cmd ="cp $(SRCS) $(OUTS)",
 )
 
 cc_library(
@@ -61,10 +61,7 @@ cc_library(
         "extern/filereaderlp/*.hpp",
         "extern/zstr/*.hpp",
     ]),
-    copts = [
-        "-Wno-unused-variable",
-        "-Wno-unused-but-set-variable",
-    ] + NDEBUG_COPTS,
+    copts = []+ NDEBUG_COPTS,
     includes = [
         "extern",
         # "extern/filereaderlp",
@@ -84,7 +81,7 @@ cc_library(
         # "src/util",
         "bazel-bin",
     ],
-    linkopts = ["-lpthread"],
+    linkopts = [],
     visibility = ["//visibility:public"],
     deps = [
         "//:config",
@@ -182,8 +179,6 @@ TEST_NAMES = [
     srcs = ["check/%s.cpp" % name],
     copts = [
         "-Iextern",
-        "-Wno-unused-variable",
-        "-Wno-unused-but-set-variable",
     ],
     deps = [
         ":highs",
