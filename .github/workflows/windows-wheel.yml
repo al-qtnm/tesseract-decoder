@@ -50,7 +50,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: [ '3.12', '3.13']
+        python-version: [ '3.10', '3.11', '3.12', '3.13']
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
     - name: Set up Python
@@ -81,10 +81,15 @@ jobs:
       env:
         TARGET_PYTHON: ${{ matrix.python-version }}
       run: |
-        bazel build --define GLIBC_VERSION=$GLIBC_VERSION --define TARGET_VERSION="$(python -c "print(\"py${TARGET_PYTHON}\".replace(\".\", \"\"))")" --define VERSION="$(cat version/version.txt)"  :tesseract_decoder_wheel
+        bazel build --define TARGET_VERSION="$(python -c "print(\"py${TARGET_PYTHON}\".replace(\".\", \"\"))")" --define VERSION="$(cat version/version.txt)"  :tesseract_decoder_wheel
 
     - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
-        name: python-wheels-${{ matrix.os }}-${{ matrix.python-version }}
+        name: python-wheels-windows-2022-${{ matrix.python-version }}
         path: ./bazel-bin/*.whl
+    
+    - name: test
+      run: |
+        pip install ./bazel-bin/python-wheels-windows-2022-${{ matrix.python-version }}.whl
+    
 
